@@ -1,0 +1,6 @@
+[tools]
+node = "24"
+pnpm = "10"
+
+[env]
+PATH = "./node_modules/.bin:{{env.PATH}}"
