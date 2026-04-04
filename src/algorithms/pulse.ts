@@ -6,6 +6,7 @@ let gridB: Float32Array;
 let nextA: Float32Array;
 let nextB: Float32Array;
 let cols = 0, rows = 0;
+let currentSeed = 0;
 const SCALE = 3;
 const dA = 1.0, dB = 0.5, feed = 0.055, kill = 0.062;
 
@@ -15,6 +16,7 @@ export const pulse: Algorithm = {
   palette: { background: '#3a3f4a', colors: ['#f08070', '#50b0b0', '#e8dcc8'] },
 
   setup(p: p5, seed: number, width: number, height: number) {
+    currentSeed = seed;
     p.randomSeed(seed); p.noiseSeed(seed);
     cols = Math.floor(width / SCALE); rows = Math.floor(height / SCALE);
     const size = cols * rows;
@@ -85,6 +87,6 @@ export const pulse: Algorithm = {
   },
 
   resize(p: p5, width: number, height: number) {
-    pulse.setup(p, Math.floor(p.random(99999)), width, height);
+    pulse.setup(p, currentSeed, width, height);
   },
 };

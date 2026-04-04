@@ -5,6 +5,7 @@ interface Triangle { type: 0 | 1; ax: number; ay: number; bx: number; by: number
 
 let triangles: Triangle[] = [];
 let w = 0, h = 0;
+let currentSeed = 0;
 const PHI = (1 + Math.sqrt(5)) / 2;
 
 function subdivide(tris: Triangle[]): Triangle[] {
@@ -32,6 +33,7 @@ export const lattice: Algorithm = {
 
   setup(p: p5, seed: number, width: number, height: number) {
     w = width; h = height;
+    currentSeed = seed;
     p.randomSeed(seed); p.noiseSeed(seed);
     const cx = w / 2, cy = h / 2;
     const r = Math.max(w, h) * 0.8;
@@ -66,5 +68,7 @@ export const lattice: Algorithm = {
 
   draw(_p: p5) {},
 
-  resize(p: p5, width: number, height: number) { w = width; h = height; },
+  resize(p: p5, width: number, height: number) {
+    lattice.setup(p, currentSeed, width, height);
+  },
 };

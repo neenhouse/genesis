@@ -26,8 +26,9 @@ export const signal: Algorithm = {
 
   draw(p: p5) {
     p.loadPixels();
-    for (let y = 0; y < h; y++) {
-      for (let x = 0; x < w; x++) {
+    const step = 3;
+    for (let y = 0; y < h; y += step) {
+      for (let x = 0; x < w; x += step) {
         let val = 0;
         for (const src of sources) {
           const dx = x - src.x, dy = y - src.y;
@@ -36,11 +37,16 @@ export const signal: Algorithm = {
         }
         val = (val / sources.length + 1) / 2;
         const bright = val * 255;
-        const idx = 4 * (y * w + x);
-        p.pixels[idx] = bright * 0.95;
-        p.pixels[idx+1] = bright * 0.97;
-        p.pixels[idx+2] = Math.min(255, bright * 1.05);
-        p.pixels[idx+3] = 255;
+
+        for (let sy = 0; sy < step && y + sy < h; sy++) {
+          for (let sx = 0; sx < step && x + sx < w; sx++) {
+            const idx = 4 * ((y + sy) * w + (x + sx));
+            p.pixels[idx] = bright * 0.95;
+            p.pixels[idx + 1] = bright * 0.97;
+            p.pixels[idx + 2] = Math.min(255, bright * 1.05);
+            p.pixels[idx + 3] = 255;
+          }
+        }
       }
     }
     p.updatePixels();

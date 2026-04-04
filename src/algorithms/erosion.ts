@@ -5,6 +5,7 @@ interface Node { x: number; y: number; }
 
 let nodes: Node[] = [];
 let w = 0, h = 0;
+let currentSeed = 0;
 const MIN_DIST = 4;
 const MAX_DIST = 12;
 const REPEL_DIST = 20;
@@ -18,6 +19,7 @@ export const erosion: Algorithm = {
 
   setup(p: p5, seed: number, width: number, height: number) {
     w = width; h = height;
+    currentSeed = seed;
     p.randomSeed(seed); p.noiseSeed(seed);
     frameCount = 0;
     nodes = [];
@@ -75,13 +77,19 @@ export const erosion: Algorithm = {
 
     p.noFill(); p.stroke(196, 122, 74, 180); p.strokeWeight(1.5);
     p.beginShape();
+    // Leading control points for smooth closure
+    p.curveVertex(nodes[nodes.length - 2].x, nodes[nodes.length - 2].y);
+    p.curveVertex(nodes[nodes.length - 1].x, nodes[nodes.length - 1].y);
     for (const node of nodes) p.curveVertex(node.x, node.y);
+    // Trailing control points for smooth closure
     p.curveVertex(nodes[0].x, nodes[0].y);
     p.curveVertex(nodes[1].x, nodes[1].y);
-    p.curveVertex(nodes[2].x, nodes[2].y);
     p.endShape();
     frameCount++;
   },
 
-  resize(p: p5, width: number, height: number) { w = width; h = height; },
+  resize(p: p5, width: number, height: number) {
+    erosion.setup(p, currentSeed, width, height);
+    p.loop();
+  },
 };

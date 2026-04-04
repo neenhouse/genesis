@@ -2,6 +2,7 @@ import type p5 from 'p5';
 import type { Algorithm } from './types';
 
 let w = 0, h = 0, count = 0;
+let currentSeed = 0;
 const MAX_COUNT = 2000;
 const GOLDEN_ANGLE = 137.5077640500378;
 const PASTELS = [
@@ -16,6 +17,7 @@ export const bloom: Algorithm = {
 
   setup(p: p5, seed: number, width: number, height: number) {
     w = width; h = height; count = 0;
+    currentSeed = seed;
     p.randomSeed(seed); p.noiseSeed(seed);
     p.background(250, 245, 240);
   },
@@ -54,5 +56,8 @@ export const bloom: Algorithm = {
     }
   },
 
-  resize(p: p5, width: number, height: number) { w = width; h = height; },
+  resize(p: p5, width: number, height: number) {
+    bloom.setup(p, currentSeed, width, height);
+    p.loop();
+  },
 };
