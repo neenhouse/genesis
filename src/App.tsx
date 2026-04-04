@@ -9,7 +9,7 @@ export function App() {
   const [seed, setSeed] = useState(42);
   const [uiVisible, setUiVisible] = useState(true);
   const [transitioning, setTransitioning] = useState(false);
-  const fadeTimer = useRef<ReturnType<typeof setTimeout>>();
+  const fadeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const algorithm = algorithms[currentIndex];
 
