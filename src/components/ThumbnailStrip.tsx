@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import type { Algorithm } from '../algorithms/types';
 
 interface ThumbnailStripProps {
@@ -13,11 +14,25 @@ export function ThumbnailStrip({
   visible,
   onSelect,
 }: ThumbnailStripProps) {
+  const stripRef = useRef<HTMLDivElement>(null);
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useEffect(() => {
+    const strip = stripRef.current;
+    const btn = buttonRefs.current[currentIndex];
+    if (!strip || !btn) return;
+    const stripRect = strip.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    const scrollTarget = btn.offsetLeft - strip.offsetWidth / 2 + btnRect.width / 2;
+    strip.scrollTo({ left: scrollTarget, behavior: 'smooth' });
+  }, [currentIndex]);
+
   return (
-    <div className={`thumbnail-strip ${visible ? 'visible' : ''}`}>
+    <div ref={stripRef} className={`thumbnail-strip ${visible ? 'visible' : ''}`}>
       {algorithms.map((algo, i) => (
         <button
           key={algo.name}
+          ref={(el) => { buttonRefs.current[i] = el; }}
           className={`thumbnail ${i === currentIndex ? 'active' : ''}`}
           onClick={() => onSelect(i)}
           aria-label={`Switch to ${algo.name}`}

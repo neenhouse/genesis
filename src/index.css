@@ -97,8 +97,8 @@ html, body, #root {
 .thumbnail-strip {
   position: fixed;
   bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 20px;
+  right: 20px;
   z-index: 10;
   display: flex;
   gap: 8px;
@@ -109,6 +109,13 @@ html, body, #root {
   border: 1px solid rgba(255,255,255,0.08);
   opacity: 0;
   transition: opacity 0.5s ease;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.thumbnail-strip::-webkit-scrollbar {
+  display: none;
 }
 .thumbnail-strip.visible {
   opacity: 1;
@@ -116,6 +123,7 @@ html, body, #root {
 
 .thumbnail {
   width: 64px;
+  min-width: 64px;
   height: 48px;
   border-radius: 6px;
   border: 2px solid transparent;
