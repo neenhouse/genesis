@@ -9,6 +9,7 @@ import { orbit } from './orbit';
 import { bloom } from './bloom';
 import { signal } from './signal';
 import { cascade } from './cascade';
+import { fracture } from './fracture';
 
 export const algorithms: Algorithm[] = [
   murmuration,
@@ -21,6 +22,7 @@ export const algorithms: Algorithm[] = [
   bloom,
   signal,
   cascade,
+  fracture,
 ];
 
 export type { Algorithm } from './types';
