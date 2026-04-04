@@ -12,6 +12,12 @@ import { cascade } from './cascade';
 import { fracture } from './fracture';
 import { tendril } from './tendril';
 import { gravity } from './gravity';
+import { weave } from './weave';
+import { coral } from './coral';
+import { shatter } from './shatter';
+import { ripple } from './ripple';
+import { aurora } from './aurora';
+import { glitch } from './glitch';
 
 export const algorithms: Algorithm[] = [
   murmuration,
@@ -27,6 +33,12 @@ export const algorithms: Algorithm[] = [
   fracture,
   tendril,
   gravity,
+  weave,
+  coral,
+  shatter,
+  ripple,
+  aurora,
+  glitch,
 ];
 
 export type { Algorithm } from './types';
