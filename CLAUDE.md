@@ -19,3 +19,4 @@ Fullscreen generative art gallery with 9 p5.js algorithms and seed-based explora
 - `src/algorithms/` — Each algorithm exports an `Algorithm` object (see `types.ts`)
 - `src/components/` — Canvas wrapper, Overlay, ThumbnailStrip
 - `src/App.tsx` — Gallery state management and keyboard navigation
+
