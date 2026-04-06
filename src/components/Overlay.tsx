@@ -26,15 +26,32 @@ export function Overlay({
 
       <div className="overlay-seed">
         <button onClick={onPrevSeed} aria-label="Previous seed">
-          &larr;
+          &#8592;
         </button>
         <span className="seed-number">#{seed}</span>
         <button onClick={onNextSeed} aria-label="Next seed">
-          &rarr;
+          &#8594;
         </button>
-        <button onClick={onRandomSeed} className="seed-random" aria-label="Random seed">
-          &crarr;
+        <button onClick={onRandomSeed} className="seed-random" aria-label="Random seed" title="Random seed (R)">
+          &#8635;
         </button>
+      </div>
+
+      <div className="keyboard-hint">
+        <div className="keyboard-hint-row">
+          <span className="kbd">&#8592;</span>
+          <span className="kbd">&#8594;</span>
+          <span>switch algorithm</span>
+        </div>
+        <div className="keyboard-hint-row">
+          <span className="kbd">&#8593;</span>
+          <span className="kbd">&#8595;</span>
+          <span>change seed</span>
+        </div>
+        <div className="keyboard-hint-row">
+          <span className="kbd">R</span>
+          <span>random seed</span>
+        </div>
       </div>
     </div>
   );
