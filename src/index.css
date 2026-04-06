@@ -13,6 +13,23 @@ html, body, #root {
   background: #000;
 }
 
+/* ---- Focus visible ---- */
+:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .canvas-container,
+  .overlay,
+  .thumbnail-strip,
+  .thumbnail {
+    transition: none !important;
+  }
+}
+
 .canvas-container {
   position: fixed;
   inset: 0;

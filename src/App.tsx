@@ -22,6 +22,13 @@ export function App() {
   const switchAlgorithm = useCallback(
     (index: number) => {
       if (index === currentIndex || transitioning) return;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reducedMotion) {
+        setCurrentIndex(index);
+        setSeed(42);
+        showUI();
+        return;
+      }
       setTransitioning(true);
       setTimeout(() => {
         setCurrentIndex(index);
