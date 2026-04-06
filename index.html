@@ -16,36 +16,83 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://genesis.neenhouse.com/hero-og.webp" />
       <style>
-      .hero-og-banner {
-        width: 100%;
-        height: 40vh;
-        min-height: 240px;
-        max-height: 400px;
-        overflow: hidden;
-        position: relative;
+      /* ─── Genesis OG — masked fractal reveal ─── */
+      .genesis-reveal {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 1;
+        transition: opacity 0.8s ease 0.4s;
       }
-      .hero-og-banner img {
+      .genesis-reveal.hidden {
+        opacity: 0;
+      }
+      .genesis-reveal img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         object-position: center;
         display: block;
+        clip-path: polygon(
+          50% 0%, 61% 15%, 79% 9%, 76% 29%,
+          93% 34%, 82% 50%, 93% 66%, 76% 71%,
+          79% 91%, 61% 85%, 50% 100%, 39% 85%,
+          21% 91%, 24% 71%, 7% 66%, 18% 50%,
+          7% 34%, 24% 29%, 21% 9%, 39% 15%
+        );
+        transform: scale(1.06);
+        transition: clip-path 1.2s ease, transform 1.2s ease;
       }
-      .hero-og-banner::after {
+      .genesis-reveal.hidden img {
+        clip-path: polygon(
+          50% 50%, 50% 50%, 50% 50%, 50% 50%,
+          50% 50%, 50% 50%, 50% 50%, 50% 50%,
+          50% 50%, 50% 50%, 50% 50%, 50% 50%,
+          50% 50%, 50% 50%, 50% 50%, 50% 50%,
+          50% 50%, 50% 50%, 50% 50%, 50% 50%
+        );
+        transform: scale(0.95);
+      }
+      .genesis-reveal::after {
         content: '';
         position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 50%;
-        background: linear-gradient(transparent, var(--bg-primary, #0f0f13));
+        inset: 0;
+        background: radial-gradient(
+          circle at center,
+          transparent 20%,
+          rgba(0, 0, 0, 0.7) 70%,
+          rgba(0, 0, 0, 0.95) 100%
+        );
         pointer-events: none;
       }
     </style>
   </head>
 <body>
-  <div class="hero-og-banner"><img src="/hero-og.webp" alt="genesis" loading="eager" /></div>
-    <div id="root"></div>
+  <div class="genesis-reveal" id="genesis-reveal" aria-hidden="true">
+    <img src="/hero-og.webp" alt="" />
+  </div>
+  <div id="root"></div>
+  <script>
+    // Fade out the genesis reveal once the app canvas initialises
+    (function () {
+      var el = document.getElementById('genesis-reveal');
+      if (!el) return;
+      var dismissed = false;
+      function dismiss() {
+        if (dismissed) return;
+        dismissed = true;
+        el.classList.add('hidden');
+        setTimeout(function () { el.remove(); }, 1400);
+      }
+      // Auto-dismiss after canvas likely paints (1.8s)
+      var timer = setTimeout(dismiss, 1800);
+      // Also dismiss on first user interaction
+      ['click', 'keydown', 'touchstart'].forEach(function (evt) {
+        window.addEventListener(evt, function () { clearTimeout(timer); dismiss(); }, { once: true, passive: true });
+      });
+    })();
+  </script>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
