@@ -22,7 +22,7 @@ function buildArc(p: p5, fromX: number, fromY: number, toX: number, toY: number,
   const points: { x: number; y: number }[] = [];
   const steps = 18 + Math.floor(p.random(12));
   points.push({ x: fromX, y: fromY });
-  let cx = fromX, cy = fromY;
+  let cx: number, cy: number;
   for (let i = 1; i < steps; i++) {
     const t = i / steps;
     const targetX = p.lerp(fromX, toX, t);

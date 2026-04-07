@@ -60,9 +60,7 @@ export const bamboo: Algorithm = {
 
     for (const stalk of stalks) {
       const wind = Math.sin(time * stalk.swaySpeed + stalk.phase) * stalk.sway;
-      const totalH = stalk.segments * stalk.segH;
       const baseY = h + 20;
-      const topY = baseY - totalH;
 
       p.push();
       p.translate(stalk.x, 0);

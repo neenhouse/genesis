@@ -2,7 +2,6 @@ import type p5 from 'p5';
 import type { Algorithm } from './types';
 
 let currentSeed = 0;
-let done = false;
 
 interface RiverPt { x: number; y: number; width: number; }
 
@@ -54,7 +53,6 @@ export const river: Algorithm = {
 
   setup(p: p5, seed: number, width: number, height: number) {
     currentSeed = seed;
-    done = false;
     p.randomSeed(seed); p.noiseSeed(seed);
 
     // tan ground
@@ -108,7 +106,6 @@ export const river: Algorithm = {
       }
     }
 
-    done = true;
   },
 
   draw(p: p5) {

@@ -16,12 +16,10 @@ interface Trace {
 let traces: Trace[] = [];
 const HISTORY = 600;
 const buffers: Float32Array[] = [];
-let bufHead = 0;
 
 function pqrst(t: number, noise: number): number {
   // Simplified PQRST waveform
   const cycle = t % 1.0;
-  let v = 0;
   // P wave
   const p = Math.exp(-Math.pow((cycle - 0.12) / 0.04, 2)) * (0.15 + noise * 0.05);
   // Q dip
@@ -32,7 +30,7 @@ function pqrst(t: number, noise: number): number {
   const s = -Math.exp(-Math.pow((cycle - 0.31) / 0.02, 2)) * 0.25;
   // T wave
   const tWave = Math.exp(-Math.pow((cycle - 0.47) / 0.07, 2)) * (0.28 + noise * 0.08);
-  v = p + q + r + s + tWave;
+  let v = p + q + r + s + tWave;
   // Baseline wander from noise
   v += (noise - 0.5) * 0.04;
   return v;
@@ -46,7 +44,7 @@ export const heartbeat: Algorithm = {
   setup(p: p5, seed: number, width: number, height: number) {
     w = width; h = height; currentSeed = seed;
     p.randomSeed(seed); p.noiseSeed(seed);
-    time = 0; bufHead = 0;
+    time = 0;
 
     const traceCount = 1 + Math.floor(p.random(3));
     traces = [];

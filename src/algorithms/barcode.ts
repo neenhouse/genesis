@@ -16,7 +16,6 @@ export const barcode: Algorithm = {
 
     // Define density zones via noise-derived sections
     const zoneCount = 6 + Math.floor(p.random(6));
-    const zoneWidth = w / zoneCount;
 
     let x = 0;
     while (x < w) {

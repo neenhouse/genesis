@@ -1,7 +1,7 @@
 import type p5 from 'p5';
 import type { Algorithm } from './types';
 
-let w = 0, h = 0, currentSeed = 0;
+let w = 0, h = 0;
 let time = 0;
 
 interface Ribbon {
@@ -29,7 +29,7 @@ export const aurora: Algorithm = {
   palette: { background: '#050510', colors: ['#4ade80', '#2dd4bf', '#a855f7'] },
 
   setup(p: p5, seed: number, width: number, height: number) {
-    w = width; h = height; currentSeed = seed;
+    w = width; h = height;
     p.randomSeed(seed); p.noiseSeed(seed);
     time = 0;
 

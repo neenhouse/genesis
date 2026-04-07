@@ -14,7 +14,7 @@ export const grid: Algorithm = {
     colors: ['#000000', '#ffffff'],
   },
 
-  setup(p: p5, seed: number, width: number, height: number) {
+  setup(p: p5, seed: number, _width: number, _height: number) {
     currentSeed = seed;
     done = false;
     p.randomSeed(seed); p.noiseSeed(seed);

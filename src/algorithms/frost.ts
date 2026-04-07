@@ -55,7 +55,6 @@ export const frost: Algorithm = {
     maxFrozen = Math.min(w, h) * 1.2;
 
     const cx = w / 2, cy = h / 2;
-    const step = Math.max(2, Math.floor(Math.min(w, h) / 120));
 
     // Seed particle at center
     frozen.push({ x: cx, y: cy });

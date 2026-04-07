@@ -12,7 +12,6 @@ let current: [number, number] | null;
 let walls: boolean[][][];
 let done: boolean;
 
-function idx(c: number, r: number) { return r * cols + c; }
 function validCell(c: number, r: number) { return c >= 0 && c < cols && r >= 0 && r < rows; }
 
 function unvisitedNeighbors(c: number, r: number): [number, number][] {

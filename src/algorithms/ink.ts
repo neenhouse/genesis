@@ -19,7 +19,6 @@ const INK_COLORS = [
 
 let drops: Drop[] = [];
 let growing = true;
-let expandStep = 0;
 
 export const ink: Algorithm = {
   name: 'Ink',
@@ -32,7 +31,6 @@ export const ink: Algorithm = {
     p.background(244, 240, 232);
     drops = [];
     growing = true;
-    expandStep = 0;
 
     const count = 4 + Math.floor(p.random(5));
     for (let i = 0; i < count; i++) {
@@ -49,7 +47,6 @@ export const ink: Algorithm = {
   draw(p: p5) {
     if (!growing) return;
 
-    expandStep++;
     let anyGrowing = false;
 
     for (const d of drops) {

@@ -43,7 +43,7 @@ export const fibonacci: Algorithm = {
       rects.push({ x, y, s, color: RECT_COLORS[i % RECT_COLORS.length] });
 
       // Determine arc corner based on direction
-      let arcCX = 0, arcCY = 0, startA = 0, endA = 0;
+      let arcCX: number, arcCY: number, startA: number, endA: number;
       if (dirs[dir % 4] === 'right') {
         arcCX = x; arcCY = y + s; startA = -Math.PI / 2; endA = 0;
         x = x + s; s = s / 1.6180339887;
@@ -55,11 +55,11 @@ export const fibonacci: Algorithm = {
       } else if (dirs[dir % 4] === 'left') {
         arcCX = x + s; arcCY = y; startA = Math.PI / 2; endA = Math.PI;
         const ns = s / 1.6180339887;
-        x = x - ns; y = y; s = ns;
+        x = x - ns; s = ns;
       } else {
         arcCX = x; arcCY = y; startA = 0; endA = Math.PI / 2;
         s = s / 1.6180339887;
-        x = x; y = y + s;
+        y = y + s;
       }
 
       arcs.push({ cx: arcCX, cy: arcCY, r: s * 1.6180339887, startA, endA });

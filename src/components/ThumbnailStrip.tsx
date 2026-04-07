@@ -21,7 +21,6 @@ export function ThumbnailStrip({
     const strip = stripRef.current;
     const btn = buttonRefs.current[currentIndex];
     if (!strip || !btn) return;
-    const stripRect = strip.getBoundingClientRect();
     const btnRect = btn.getBoundingClientRect();
     const scrollTarget = btn.offsetLeft - strip.offsetWidth / 2 + btnRect.width / 2;
     strip.scrollTo({ left: scrollTarget, behavior: 'smooth' });

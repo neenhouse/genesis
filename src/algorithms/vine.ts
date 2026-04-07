@@ -29,7 +29,6 @@ export const vine: Algorithm = {
     const startY = h * 0.95;
 
     for (let i = 0; i < steps; i++) {
-      const t = i / steps;
       const nx = p.noise(i * 0.018, seed * 0.001) - 0.5;
       sx = p.constrain(sx + nx * 3.5, w * 0.15, w * 0.85);
       stemPoints.push({ x: sx, y: startY - i });

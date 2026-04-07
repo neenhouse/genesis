@@ -1,7 +1,7 @@
 import type p5 from 'p5';
 import type { Algorithm } from './types';
 
-let w = 0, h = 0, currentSeed = 0;
+let w = 0, h = 0;
 const BODY_COUNT = 8;
 const G = 0.5;
 
@@ -28,7 +28,7 @@ export const gravity: Algorithm = {
   palette: { background: '#05050f', colors: ['#fff0c8', '#ffd778', '#c8b4ff'] },
 
   setup(p: p5, seed: number, width: number, height: number) {
-    w = width; h = height; currentSeed = seed;
+    w = width; h = height;
     p.randomSeed(seed); p.noiseSeed(seed);
 
     bodies = [];

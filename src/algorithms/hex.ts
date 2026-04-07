@@ -68,7 +68,7 @@ export const hex: Algorithm = {
     colors: ['#8b5a2b', '#b47832', '#50603c', '#3c4f64'],
   },
 
-  setup(p: p5, seed: number, width: number, height: number) {
+  setup(p: p5, seed: number, _width: number, _height: number) {
     currentSeed = seed;
     done = false;
     p.randomSeed(seed); p.noiseSeed(seed);

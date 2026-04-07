@@ -19,8 +19,6 @@ function morphShape(p: p5, cx: number, cy: number, r: number, morph: number, rot
   p.beginShape();
   for (let i = 0; i <= n; i++) {
     const a = (i / n) * p.TWO_PI + rotation;
-    // Blend between pure polygon and circle
-    const blend = Math.min(sides - Math.floor(sides), 1);
     const polyX = cx + Math.cos(a) * r;
     const polyY = cy + Math.sin(a) * r;
     p.vertex(polyX, polyY);

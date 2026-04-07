@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "type": "module",
   "packageManager": "pnpm@10.6.2",
-  "engines": { "node": ">=24.0.0" },
+  "engines": {
+    "node": ">=24.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "deploy": "pnpm run build && wrangler pages deploy dist --project-name genesis"
+    "deploy": "pnpm run build && wrangler pages deploy dist --project-name genesis",
+    "test": "vitest run",
+    "lint": "eslint ."
   },
   "dependencies": {
     "p5": "^1.11.0",
@@ -16,12 +20,23 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^25.5.2",
     "@types/p5": "^1.7.6",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "typescript": "^5.7.0",
-    "vite": "^7.0.0",
     "@vitejs/plugin-react": "^4.4.0",
+    "@vitest/ui": "^4.1.3",
+    "eslint": "^10.2.0",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.4.0",
+    "jsdom": "^29.0.2",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.58.0",
+    "vite": "^7.0.0",
+    "vitest": "^4.1.3",
     "wrangler": "^4.0.0"
   }
 }
