@@ -13,6 +13,8 @@ interface OverlayProps {
   onRandomSeed: () => void;
   onToggleAutoplay: () => void;
   onShare: () => void;
+  onSave: () => void;
+  onToggleHelp: () => void;
 }
 
 export function Overlay({
@@ -28,6 +30,8 @@ export function Overlay({
   onRandomSeed,
   onToggleAutoplay,
   onShare,
+  onSave,
+  onToggleHelp,
 }: OverlayProps) {
   return (
     <div className={`overlay ${visible ? 'visible' : ''}`}>
@@ -68,6 +72,22 @@ export function Overlay({
             title="Copy link"
           >
             {copied ? '\u2713' : '\u2197'}
+          </button>
+          <button
+            onClick={onSave}
+            className="action-btn"
+            aria-label="Save artwork"
+            title="Save as PNG (S)"
+          >
+            &#8681;
+          </button>
+          <button
+            onClick={onToggleHelp}
+            className="action-btn"
+            aria-label="Show keyboard shortcuts"
+            title="Keyboard shortcuts (?)"
+          >
+            ?
           </button>
         </div>
       </div>

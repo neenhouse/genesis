@@ -60,6 +60,8 @@ describe('Overlay', () => {
         onRandomSeed={vi.fn()}
         onToggleAutoplay={vi.fn()}
         onShare={vi.fn()}
+        onSave={vi.fn()}
+        onToggleHelp={vi.fn()}
       />,
     );
     expect(screen.getByText('Test Algo')).toBeInTheDocument();
@@ -81,6 +83,8 @@ describe('Overlay', () => {
         onRandomSeed={vi.fn()}
         onToggleAutoplay={vi.fn()}
         onShare={vi.fn()}
+        onSave={vi.fn()}
+        onToggleHelp={vi.fn()}
       />,
     );
     expect(screen.getByText('#123')).toBeInTheDocument();
@@ -101,6 +105,8 @@ describe('Overlay', () => {
         onRandomSeed={vi.fn()}
         onToggleAutoplay={vi.fn()}
         onShare={vi.fn()}
+        onSave={vi.fn()}
+        onToggleHelp={vi.fn()}
       />,
     );
     expect(container.querySelector('.overlay.visible')).toBeTruthy();
@@ -121,6 +127,8 @@ describe('Overlay', () => {
         onRandomSeed={vi.fn()}
         onToggleAutoplay={vi.fn()}
         onShare={vi.fn()}
+        onSave={vi.fn()}
+        onToggleHelp={vi.fn()}
       />,
     );
     expect(container.querySelector('.overlay.visible')).toBeNull();
@@ -142,6 +150,8 @@ describe('Overlay', () => {
         onRandomSeed={vi.fn()}
         onToggleAutoplay={vi.fn()}
         onShare={vi.fn()}
+        onSave={vi.fn()}
+        onToggleHelp={vi.fn()}
       />,
     );
     fireEvent.click(screen.getByRole('button', { name: /previous seed/i }));
@@ -164,6 +174,8 @@ describe('Overlay', () => {
         onRandomSeed={vi.fn()}
         onToggleAutoplay={vi.fn()}
         onShare={vi.fn()}
+        onSave={vi.fn()}
+        onToggleHelp={vi.fn()}
       />,
     );
     fireEvent.click(screen.getByRole('button', { name: /next seed/i }));
@@ -186,6 +198,8 @@ describe('Overlay', () => {
         onRandomSeed={onRandom}
         onToggleAutoplay={vi.fn()}
         onShare={vi.fn()}
+        onSave={vi.fn()}
+        onToggleHelp={vi.fn()}
       />,
     );
     fireEvent.click(screen.getByRole('button', { name: /random seed/i }));
@@ -207,6 +221,8 @@ describe('Overlay', () => {
         onRandomSeed={vi.fn()}
         onToggleAutoplay={vi.fn()}
         onShare={vi.fn()}
+        onSave={vi.fn()}
+        onToggleHelp={vi.fn()}
       />,
     );
     expect(screen.getByText('switch algorithm')).toBeInTheDocument();

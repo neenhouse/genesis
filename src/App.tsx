@@ -33,6 +33,7 @@ export function App() {
   const [transitioning, setTransitioning] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
   const fadeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const autoplayTimer = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
@@ -74,18 +75,32 @@ export function App() {
     showUI();
   }, [showUI]);
 
-  // Autoplay: cycle to next algorithm every 8s
+  const handleSave = useCallback(() => {
+    const canvas = document.querySelector('.canvas-container canvas') as HTMLCanvasElement | null;
+    if (!canvas) return;
+    const link = document.createElement('a');
+    link.download = `${slugify(algorithm.name)}-seed-${seed}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showUI();
+  }, [algorithm.name, seed, showUI]);
+
+  // Autoplay: cycle to next algorithm every 8s, reset timer on manual index change
   useEffect(() => {
     if (autoplay) {
       autoplayTimer.current = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % algorithms.length);
-        setSeed(42);
+        setTransitioning(true);
+        setTimeout(() => {
+          setCurrentIndex((prev) => (prev + 1) % algorithms.length);
+          setSeed(42);
+          setTransitioning(false);
+        }, 400);
       }, 8000);
     } else {
       clearInterval(autoplayTimer.current);
     }
     return () => clearInterval(autoplayTimer.current);
-  }, [autoplay]);
+  }, [autoplay, currentIndex]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -121,11 +136,21 @@ export function App() {
             document.exitFullscreen?.();
           }
           break;
+        case 's':
+        case 'S':
+          handleSave();
+          break;
+        case '?':
+          setShowHelp((h) => !h);
+          break;
+        case 'Escape':
+          setShowHelp(false);
+          break;
       }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [currentIndex, switchAlgorithm, showUI]);
+  }, [currentIndex, switchAlgorithm, showUI, handleSave]);
 
   useEffect(() => {
     const handleMove = () => showUI();
@@ -198,6 +223,8 @@ export function App() {
         onRandomSeed={() => { setSeed(Math.floor(Math.random() * 999999) + 1); showUI(); }}
         onToggleAutoplay={() => { setAutoplay((a) => !a); showUI(); }}
         onShare={handleShare}
+        onSave={handleSave}
+        onToggleHelp={() => setShowHelp((h) => !h)}
       />
       <ThumbnailStrip
         algorithms={algorithms}
@@ -205,6 +232,26 @@ export function App() {
         visible={uiVisible}
         onSelect={(i) => switchAlgorithm(i)}
       />
+      {showHelp && (
+        <div className="help-overlay" onClick={() => setShowHelp(false)}>
+          <div className="help-modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Keyboard Shortcuts</h2>
+            <div className="help-grid">
+              <kbd>&larr;</kbd><span>Previous algorithm</span>
+              <kbd>&rarr;</kbd><span>Next algorithm</span>
+              <kbd>&uarr;</kbd><span>Next seed</span>
+              <kbd>&darr;</kbd><span>Previous seed</span>
+              <kbd>R</kbd><span>Random seed</span>
+              <kbd>Space</kbd><span>Toggle autoplay</span>
+              <kbd>F</kbd><span>Toggle fullscreen</span>
+              <kbd>S</kbd><span>Save artwork as PNG</span>
+              <kbd>?</kbd><span>Toggle this help</span>
+            </div>
+            <p className="help-hint">Swipe left/right on mobile to browse</p>
+            <button className="help-close" onClick={() => setShowHelp(false)}>Got it</button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
