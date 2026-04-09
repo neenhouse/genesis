@@ -3,7 +3,6 @@ import type { Algorithm } from './types';
 
 let w = 0, h = 0, currentSeed = 0;
 let time = 0;
-const STEP = 2;
 
 export const ocean: Algorithm = {
   name: 'Ocean',
@@ -22,47 +21,57 @@ export const ocean: Algorithm = {
   draw(p: p5) {
     time += 0.018;
 
-    for (let y = 0; y < h; y += STEP) {
-      for (let x = 0; x < w; x += STEP) {
-        const nx = x / w;
-        const ny = y / h;
+    p.loadPixels();
+    const d = p.pixelDensity();
+    const pw = w * d;
+    const ph = h * d;
+
+    for (let y = 0; y < ph; y++) {
+      const ny = y / ph;
+      for (let x = 0; x < pw; x++) {
+        const nx = x / pw;
 
         // Caustic pattern: sum of sine/cosine distortions
         const a = Math.sin(nx * 8.0 + time) + Math.cos(ny * 6.0 + time * 0.7);
         const b = Math.cos(nx * 5.0 - time * 0.9) + Math.sin(ny * 9.0 + time * 1.1);
         const c = Math.sin((nx + ny) * 7.0 + time * 0.5);
-        const d = p.noise(nx * 3 + time * 0.2, ny * 3 + time * 0.15) * 2 - 1;
+        const d2 = p.noise(nx * 3 + time * 0.2, ny * 3 + time * 0.15) * 2 - 1;
 
-        const caustic = (a + b + c + d * 1.5) / 5.5; // -1 to 1
-        const t = (caustic + 1) * 0.5;                // 0 to 1
+        const caustic = (a + b + c + d2 * 1.5) / 5.5;
+        const t = (caustic + 1) * 0.5;
 
-        let r, g, b2;
+        let r: number, g: number, bl: number;
         if (t < 0.3) {
           const s = t / 0.3;
-          r = Math.floor(p.lerp(0, 0, s));
-          g = Math.floor(p.lerp(20, 80, s));
-          b2 = Math.floor(p.lerp(40, 100, s));
+          r = 0;
+          g = 20 + s * 60 | 0;
+          bl = 40 + s * 60 | 0;
         } else if (t < 0.65) {
           const s = (t - 0.3) / 0.35;
-          r = Math.floor(p.lerp(0, 0, s));
-          g = Math.floor(p.lerp(80, 160, s));
-          b2 = Math.floor(p.lerp(100, 180, s));
+          r = 0;
+          g = 80 + s * 80 | 0;
+          bl = 100 + s * 80 | 0;
         } else if (t < 0.85) {
           const s = (t - 0.65) / 0.2;
-          r = Math.floor(p.lerp(0, 30, s));
-          g = Math.floor(p.lerp(160, 220, s));
-          b2 = Math.floor(p.lerp(180, 220, s));
+          r = s * 30 | 0;
+          g = 160 + s * 60 | 0;
+          bl = 180 + s * 40 | 0;
         } else {
           const s = (t - 0.85) / 0.15;
-          r = Math.floor(p.lerp(30, 180, s));
-          g = Math.floor(p.lerp(220, 255, s));
-          b2 = Math.floor(p.lerp(220, 255, s));
+          r = 30 + s * 150 | 0;
+          g = 220 + s * 35 | 0;
+          bl = 220 + s * 35 | 0;
         }
 
-        p.fill(r, g, b2);
-        p.rect(x, y, STEP, STEP);
+        const idx = (y * pw + x) * 4;
+        p.pixels[idx] = r;
+        p.pixels[idx + 1] = g;
+        p.pixels[idx + 2] = bl;
+        p.pixels[idx + 3] = 255;
       }
     }
+
+    p.updatePixels();
   },
 
   resize(p: p5, width: number, height: number) {

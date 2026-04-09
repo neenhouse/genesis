@@ -181,16 +181,16 @@ html, body, #root {
   line-height: 1.4;
 }
 
-/* Thumbnail strip */
-.thumbnail-strip {
+/* Thumbnail strip wrapper */
+.thumbnail-strip-wrapper {
   position: fixed;
   bottom: 16px;
   left: 16px;
   right: 16px;
   z-index: 10;
   display: flex;
-  gap: 6px;
-  padding: 8px 10px;
+  align-items: stretch;
+  gap: 0;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -198,16 +198,78 @@ html, body, #root {
   border: 1px solid rgba(255, 255, 255, 0.07);
   opacity: 0;
   transition: opacity 0.5s ease;
+}
+.thumbnail-strip-wrapper.visible {
+  opacity: 1;
+}
+
+/* Search input */
+.thumbnail-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 8px 0 8px 10px;
+  flex-shrink: 0;
+}
+.thumbnail-search-input {
+  width: 80px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 7px;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  padding: 0 24px 0 8px;
+  outline: none;
+  transition: width 0.2s ease, border-color 0.15s ease;
+}
+.thumbnail-search-input:focus {
+  width: 120px;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.thumbnail-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+.thumbnail-search-clear {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 4px;
+  line-height: 1;
+}
+.thumbnail-search-clear:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+.thumbnail-no-results {
+  font-family: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.3);
+  white-space: nowrap;
+  padding: 0 12px;
+  align-self: center;
+}
+
+/* Thumbnail strip (scroll area) */
+.thumbnail-strip {
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
   scrollbar-width: none;
+  flex: 1;
+  min-width: 0;
 }
 .thumbnail-strip::-webkit-scrollbar {
   display: none;
-}
-.thumbnail-strip.visible {
-  opacity: 1;
 }
 
 .thumbnail {
@@ -280,4 +342,6 @@ html, body, #root {
   .thumbnail-label { font-size: 6.5px; }
   .keyboard-hint { display: none; }
   .overlay-seed { top: 12px; right: 12px; }
+  .thumbnail-search-input { width: 60px; }
+  .thumbnail-search-input:focus { width: 90px; }
 }

@@ -1,6 +1,6 @@
 # Genesis — Algorithmic Art Gallery
 
-Fullscreen generative art gallery with 9 p5.js algorithms and seed-based exploration.
+Fullscreen generative art gallery with 99 p5.js algorithms and seed-based exploration.
 
 ## Tech Stack
 

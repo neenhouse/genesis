@@ -235,7 +235,7 @@ describe('ThumbnailStrip', () => {
         onSelect={vi.fn()}
       />,
     );
-    expect(container.querySelector('.thumbnail-strip.visible')).toBeTruthy();
+    expect(container.querySelector('.thumbnail-strip-wrapper.visible')).toBeTruthy();
   });
 
   it('renders color swatches for each algorithm palette', () => {
