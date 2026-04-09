@@ -69,6 +69,11 @@ html, body, #root {
   border-radius: 10px;
   max-width: 340px;
 }
+.overlay-title-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
 .overlay-title h1 {
   font-family: 'Space Grotesk', 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 22px;
@@ -76,6 +81,14 @@ html, body, #root {
   letter-spacing: 0.02em;
   color: #fff;
   line-height: 1.2;
+}
+.algorithm-counter {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 .overlay-title p {
   font-family: 'Space Grotesk', 'Helvetica Neue', Helvetica, sans-serif;
@@ -87,15 +100,20 @@ html, body, #root {
   letter-spacing: 0.01em;
 }
 
-/* Seed controls — top-right */
-.overlay-seed {
+/* Controls — top-right */
+.overlay-controls {
   position: absolute;
   top: 20px;
   right: 20px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   pointer-events: auto;
+}
+.overlay-seed {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -135,6 +153,46 @@ html, body, #root {
 }
 .overlay-seed button.seed-random:hover {
   background: rgba(255, 255, 255, 0.15);
+}
+
+/* Action buttons (autoplay, share) */
+.overlay-actions {
+  display: flex;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 6px 6px;
+}
+.action-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.action-btn:active {
+  transform: translateY(0);
+}
+.action-btn.active {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
 }
 
 .seed-number {
@@ -341,7 +399,8 @@ html, body, #root {
   .thumbnail { width: 52px; min-width: 52px; height: 38px; }
   .thumbnail-label { font-size: 6.5px; }
   .keyboard-hint { display: none; }
-  .overlay-seed { top: 12px; right: 12px; }
+  .overlay-controls { top: 12px; right: 12px; gap: 6px; }
+  .overlay-actions { padding: 4px 4px; }
   .thumbnail-search-input { width: 60px; }
   .thumbnail-search-input:focus { width: 90px; }
 }

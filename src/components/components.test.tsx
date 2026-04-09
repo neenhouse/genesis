@@ -51,9 +51,15 @@ describe('Overlay', () => {
         algorithm={mockAlgo}
         seed={42}
         visible={true}
+        currentIndex={0}
+        totalCount={99}
+        autoplay={false}
+        copied={false}
         onPrevSeed={vi.fn()}
         onNextSeed={vi.fn()}
         onRandomSeed={vi.fn()}
+        onToggleAutoplay={vi.fn()}
+        onShare={vi.fn()}
       />,
     );
     expect(screen.getByText('Test Algo')).toBeInTheDocument();
@@ -66,9 +72,15 @@ describe('Overlay', () => {
         algorithm={mockAlgo}
         seed={123}
         visible={true}
+        currentIndex={0}
+        totalCount={99}
+        autoplay={false}
+        copied={false}
         onPrevSeed={vi.fn()}
         onNextSeed={vi.fn()}
         onRandomSeed={vi.fn()}
+        onToggleAutoplay={vi.fn()}
+        onShare={vi.fn()}
       />,
     );
     expect(screen.getByText('#123')).toBeInTheDocument();
@@ -80,9 +92,15 @@ describe('Overlay', () => {
         algorithm={mockAlgo}
         seed={1}
         visible={true}
+        currentIndex={0}
+        totalCount={99}
+        autoplay={false}
+        copied={false}
         onPrevSeed={vi.fn()}
         onNextSeed={vi.fn()}
         onRandomSeed={vi.fn()}
+        onToggleAutoplay={vi.fn()}
+        onShare={vi.fn()}
       />,
     );
     expect(container.querySelector('.overlay.visible')).toBeTruthy();
@@ -94,9 +112,15 @@ describe('Overlay', () => {
         algorithm={mockAlgo}
         seed={1}
         visible={false}
+        currentIndex={0}
+        totalCount={99}
+        autoplay={false}
+        copied={false}
         onPrevSeed={vi.fn()}
         onNextSeed={vi.fn()}
         onRandomSeed={vi.fn()}
+        onToggleAutoplay={vi.fn()}
+        onShare={vi.fn()}
       />,
     );
     expect(container.querySelector('.overlay.visible')).toBeNull();
@@ -109,9 +133,15 @@ describe('Overlay', () => {
         algorithm={mockAlgo}
         seed={5}
         visible={true}
+        currentIndex={0}
+        totalCount={99}
+        autoplay={false}
+        copied={false}
         onPrevSeed={onPrev}
         onNextSeed={vi.fn()}
         onRandomSeed={vi.fn()}
+        onToggleAutoplay={vi.fn()}
+        onShare={vi.fn()}
       />,
     );
     fireEvent.click(screen.getByRole('button', { name: /previous seed/i }));
@@ -125,9 +155,15 @@ describe('Overlay', () => {
         algorithm={mockAlgo}
         seed={5}
         visible={true}
+        currentIndex={0}
+        totalCount={99}
+        autoplay={false}
+        copied={false}
         onPrevSeed={vi.fn()}
         onNextSeed={onNext}
         onRandomSeed={vi.fn()}
+        onToggleAutoplay={vi.fn()}
+        onShare={vi.fn()}
       />,
     );
     fireEvent.click(screen.getByRole('button', { name: /next seed/i }));
@@ -141,9 +177,15 @@ describe('Overlay', () => {
         algorithm={mockAlgo}
         seed={5}
         visible={true}
+        currentIndex={0}
+        totalCount={99}
+        autoplay={false}
+        copied={false}
         onPrevSeed={vi.fn()}
         onNextSeed={vi.fn()}
         onRandomSeed={onRandom}
+        onToggleAutoplay={vi.fn()}
+        onShare={vi.fn()}
       />,
     );
     fireEvent.click(screen.getByRole('button', { name: /random seed/i }));
@@ -156,14 +198,20 @@ describe('Overlay', () => {
         algorithm={mockAlgo}
         seed={1}
         visible={true}
+        currentIndex={0}
+        totalCount={99}
+        autoplay={false}
+        copied={false}
         onPrevSeed={vi.fn()}
         onNextSeed={vi.fn()}
         onRandomSeed={vi.fn()}
+        onToggleAutoplay={vi.fn()}
+        onShare={vi.fn()}
       />,
     );
     expect(screen.getByText('switch algorithm')).toBeInTheDocument();
     expect(screen.getByText('change seed')).toBeInTheDocument();
-    expect(screen.getByText('random seed')).toBeInTheDocument();
+    expect(screen.getByText('random')).toBeInTheDocument();
   });
 });
 

@@ -31,7 +31,10 @@ export function App() {
   const [seed, setSeed] = useState(initial.current.seed);
   const [uiVisible, setUiVisible] = useState(true);
   const [transitioning, setTransitioning] = useState(false);
+  const [autoplay, setAutoplay] = useState(false);
+  const [copied, setCopied] = useState(false);
   const fadeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const autoplayTimer = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
   const algorithm = algorithms[currentIndex];
 
@@ -62,8 +65,32 @@ export function App() {
     [currentIndex, transitioning, showUI],
   );
 
+  const handleShare = useCallback(() => {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+    showUI();
+  }, [showUI]);
+
+  // Autoplay: cycle to next algorithm every 8s
+  useEffect(() => {
+    if (autoplay) {
+      autoplayTimer.current = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % algorithms.length);
+        setSeed(42);
+      }, 8000);
+    } else {
+      clearInterval(autoplayTimer.current);
+    }
+    return () => clearInterval(autoplayTimer.current);
+  }, [autoplay]);
+
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
+      // Don't capture keys when typing in search
+      if ((e.target as HTMLElement)?.tagName === 'INPUT') return;
       showUI();
       switch (e.key) {
         case 'ArrowLeft':
@@ -81,6 +108,18 @@ export function App() {
         case 'r':
         case 'R':
           setSeed(Math.floor(Math.random() * 999999) + 1);
+          break;
+        case ' ':
+          e.preventDefault();
+          setAutoplay((a) => !a);
+          break;
+        case 'f':
+        case 'F':
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen?.();
+          } else {
+            document.exitFullscreen?.();
+          }
           break;
       }
     };
@@ -150,9 +189,15 @@ export function App() {
         algorithm={algorithm}
         seed={seed}
         visible={uiVisible}
+        currentIndex={currentIndex}
+        totalCount={algorithms.length}
+        autoplay={autoplay}
+        copied={copied}
         onPrevSeed={() => { setSeed((s) => Math.max(1, s - 1)); showUI(); }}
         onNextSeed={() => { setSeed((s) => s + 1); showUI(); }}
         onRandomSeed={() => { setSeed(Math.floor(Math.random() * 999999) + 1); showUI(); }}
+        onToggleAutoplay={() => { setAutoplay((a) => !a); showUI(); }}
+        onShare={handleShare}
       />
       <ThumbnailStrip
         algorithms={algorithms}

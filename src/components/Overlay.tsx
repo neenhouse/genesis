@@ -4,37 +4,72 @@ interface OverlayProps {
   algorithm: Algorithm;
   seed: number;
   visible: boolean;
+  currentIndex: number;
+  totalCount: number;
+  autoplay: boolean;
+  copied: boolean;
   onPrevSeed: () => void;
   onNextSeed: () => void;
   onRandomSeed: () => void;
+  onToggleAutoplay: () => void;
+  onShare: () => void;
 }
 
 export function Overlay({
   algorithm,
   seed,
   visible,
+  currentIndex,
+  totalCount,
+  autoplay,
+  copied,
   onPrevSeed,
   onNextSeed,
   onRandomSeed,
+  onToggleAutoplay,
+  onShare,
 }: OverlayProps) {
   return (
     <div className={`overlay ${visible ? 'visible' : ''}`}>
       <div className="overlay-title">
-        <h1>{algorithm.name}</h1>
+        <div className="overlay-title-header">
+          <h1>{algorithm.name}</h1>
+          <span className="algorithm-counter">{currentIndex + 1} / {totalCount}</span>
+        </div>
         <p>{algorithm.description}</p>
       </div>
 
-      <div className="overlay-seed">
-        <button onClick={onPrevSeed} aria-label="Previous seed">
-          &#8592;
-        </button>
-        <span className="seed-number">#{seed}</span>
-        <button onClick={onNextSeed} aria-label="Next seed">
-          &#8594;
-        </button>
-        <button onClick={onRandomSeed} className="seed-random" aria-label="Random seed" title="Random seed (R)">
-          &#8635;
-        </button>
+      <div className="overlay-controls">
+        <div className="overlay-seed">
+          <button onClick={onPrevSeed} aria-label="Previous seed">
+            &#8592;
+          </button>
+          <span className="seed-number">#{seed}</span>
+          <button onClick={onNextSeed} aria-label="Next seed">
+            &#8594;
+          </button>
+          <button onClick={onRandomSeed} className="seed-random" aria-label="Random seed" title="Random seed (R)">
+            &#8635;
+          </button>
+        </div>
+        <div className="overlay-actions">
+          <button
+            onClick={onToggleAutoplay}
+            className={`action-btn ${autoplay ? 'active' : ''}`}
+            aria-label={autoplay ? 'Stop autoplay' : 'Start autoplay'}
+            title="Autoplay (Space)"
+          >
+            {autoplay ? '\u23F8' : '\u25B6'}
+          </button>
+          <button
+            onClick={onShare}
+            className="action-btn"
+            aria-label="Copy link"
+            title="Copy link"
+          >
+            {copied ? '\u2713' : '\u2197'}
+          </button>
+        </div>
       </div>
 
       <div className="keyboard-hint">
@@ -50,7 +85,11 @@ export function Overlay({
         </div>
         <div className="keyboard-hint-row">
           <span className="kbd">R</span>
-          <span>random seed</span>
+          <span>random</span>
+          <span className="kbd">Space</span>
+          <span>autoplay</span>
+          <span className="kbd">F</span>
+          <span>fullscreen</span>
         </div>
       </div>
     </div>
