@@ -59,7 +59,8 @@ function explode(p: p5, rocket: Rocket) {
 
 export const fireworks: Algorithm = {
   name: 'Fireworks',
-  description: 'Particle fireworks — rockets burst into gravity-pulled sparks',
+  description: 'Particle fireworks — click or tap anywhere to launch rockets',
+  interactive: true,
   palette: { background: '#000000', colors: ['#ffdc32', '#ff5050', '#50dcff'] },
 
   setup(p: p5, seed: number, width: number, height: number) {
@@ -110,6 +111,17 @@ export const fireworks: Algorithm = {
 
       if (s.life <= 0) sparks.splice(i, 1);
     }
+  },
+
+  mousePressed(p: p5, mx: number, my: number) {
+    const col = SPARK_COLORS[Math.floor(p.random(SPARK_COLORS.length))];
+    rockets.push({
+      x: mx,
+      y: h,
+      vy: -(8 + (h - my) / h * 8),
+      r: col[0], g: col[1], b: col[2],
+      exploded: false,
+    });
   },
 
   resize(p: p5, width: number, height: number) {

@@ -3,6 +3,7 @@ import type { Algorithm } from './types';
 
 let w = 0, h = 0, currentSeed = 0;
 let time = 0;
+let portalOffsetX = 0, portalOffsetY = 0;
 let layerPhases: number[] = [];
 let layerSpeeds: number[] = [];
 let layerColors: Array<[number, number, number]> = [];
@@ -28,7 +29,8 @@ function morphShape(p: p5, cx: number, cy: number, r: number, morph: number, rot
 
 export const portal: Algorithm = {
   name: 'Portal',
-  description: 'Concentric morphing shapes create a rotating tunnel portal illusion',
+  description: 'Rotating tunnel — move your mouse to warp the perspective',
+  interactive: true,
   palette: { background: '#0a0015', colors: ['#7c3aed', '#3b82f6', '#ffffff'] },
 
   setup(p: p5, seed: number, width: number, height: number) {
@@ -55,8 +57,8 @@ export const portal: Algorithm = {
     p.background(10, 0, 21);
     time += 0.018;
 
-    const cx = w / 2;
-    const cy = h / 2;
+    const cx = w / 2 + portalOffsetX;
+    const cy = h / 2 + portalOffsetY;
     const maxR = Math.min(w, h) * 0.5;
 
     // Draw from outermost to innermost so inner layers appear on top
@@ -90,6 +92,12 @@ export const portal: Algorithm = {
     }
     p.fill(255, 255, 255, 230);
     p.circle(cx, cy, maxR * 0.022);
+  },
+
+  mouseMoved(_p: p5, mx: number, my: number) {
+    // Offset portal center toward mouse, with dampening
+    portalOffsetX = (mx - w / 2) * 0.15;
+    portalOffsetY = (my - h / 2) * 0.15;
   },
 
   resize(p: p5, width: number, height: number) {

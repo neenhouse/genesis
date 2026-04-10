@@ -82,6 +82,19 @@ html, body, #root {
   color: #fff;
   line-height: 1.2;
 }
+.interactive-badge {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #00e5ff;
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 4px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
 .algorithm-counter {
   font-family: 'JetBrains Mono', 'Courier New', monospace;
   font-size: 11px;

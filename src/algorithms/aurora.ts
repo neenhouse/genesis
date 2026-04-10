@@ -13,6 +13,7 @@ interface Ribbon {
 }
 
 let ribbons: Ribbon[] = [];
+let mouseInfluenceX = 0.5, mouseInfluenceY = 0.5;
 
 const AURORA_COLORS = [
   [74, 222, 128],   // green
@@ -25,7 +26,8 @@ const AURORA_COLORS = [
 
 export const aurora: Algorithm = {
   name: 'Aurora',
-  description: 'Layered sine ribbons — northern lights shimmering across the sky',
+  description: 'Northern lights — move your mouse to shift the ribbons',
+  interactive: true,
   palette: { background: '#050510', colors: ['#4ade80', '#2dd4bf', '#a855f7'] },
 
   setup(p: p5, seed: number, width: number, height: number) {
@@ -53,6 +55,9 @@ export const aurora: Algorithm = {
     p.background(5, 5, 16, 15);
     time += 0.02;
 
+    const yShift = (mouseInfluenceY - 0.5) * h * 0.3;
+    const speedMult = 0.5 + mouseInfluenceX * 1.5;
+
     for (const ribbon of ribbons) {
       const [r, g, b] = ribbon.color;
 
@@ -63,14 +68,14 @@ export const aurora: Algorithm = {
       p.beginShape();
       // Top edge
       for (let x = 0; x <= w; x += 4) {
-        const noiseY = p.noise(x * 0.003, time * ribbon.speed, ribbon.baseY * 0.01);
-        const y = ribbon.baseY + Math.sin(x * ribbon.frequency + time * ribbon.speed) * ribbon.amplitude * noiseY;
+        const noiseY = p.noise(x * 0.003, time * ribbon.speed * speedMult, ribbon.baseY * 0.01);
+        const y = ribbon.baseY + yShift + Math.sin(x * ribbon.frequency + time * ribbon.speed * speedMult) * ribbon.amplitude * noiseY;
         p.vertex(x, y);
       }
       // Bottom edge (reverse)
       for (let x = w; x >= 0; x -= 4) {
-        const noiseY = p.noise(x * 0.003, time * ribbon.speed + 10, ribbon.baseY * 0.01);
-        const y = ribbon.baseY + 40 + Math.sin(x * ribbon.frequency * 1.1 + time * ribbon.speed + 1) * ribbon.amplitude * 0.6 * noiseY;
+        const noiseY = p.noise(x * 0.003, time * ribbon.speed * speedMult + 10, ribbon.baseY * 0.01);
+        const y = ribbon.baseY + yShift + 40 + Math.sin(x * ribbon.frequency * 1.1 + time * ribbon.speed * speedMult + 1) * ribbon.amplitude * 0.6 * noiseY;
         p.vertex(x, y);
       }
       p.endShape(p.CLOSE);
@@ -81,12 +86,17 @@ export const aurora: Algorithm = {
       p.strokeWeight(1);
       p.beginShape();
       for (let x = 0; x <= w; x += 4) {
-        const noiseY = p.noise(x * 0.003, time * ribbon.speed, ribbon.baseY * 0.01);
-        const y = ribbon.baseY + 20 + Math.sin(x * ribbon.frequency + time * ribbon.speed) * ribbon.amplitude * 0.8 * noiseY;
+        const noiseY = p.noise(x * 0.003, time * ribbon.speed * speedMult, ribbon.baseY * 0.01);
+        const y = ribbon.baseY + yShift + 20 + Math.sin(x * ribbon.frequency + time * ribbon.speed * speedMult) * ribbon.amplitude * 0.8 * noiseY;
         p.vertex(x, y);
       }
       p.endShape();
     }
+  },
+
+  mouseMoved(_p: p5, mx: number, my: number) {
+    mouseInfluenceX = mx / w;
+    mouseInfluenceY = my / h;
   },
 
   resize(p: p5, width: number, height: number) {

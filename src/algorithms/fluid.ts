@@ -9,9 +9,12 @@ let vx: Float32Array;
 let vy: Float32Array;
 const STEP = 3;
 
+let dragX = -1, dragY = -1, prevDragX = -1, prevDragY = -1;
+
 export const fluid: Algorithm = {
   name: 'Fluid',
-  description: 'Simple advection-based fluid simulation — color blobs swirl and mix',
+  description: 'Fluid simulation — drag to inject swirls and mix colors',
+  interactive: true,
   palette: { background: '#ffffff', colors: ['#e63946', '#f4a261', '#457b9d', '#2a9d8f'] },
 
   setup(p: p5, seed: number, width: number, height: number) {
@@ -50,6 +53,30 @@ export const fluid: Algorithm = {
       { x: w * 0.15 + Math.sin(time * 0.3 + 2) * w * 0.1, y: h * 0.75 + Math.cos(time * 0.5 + 1) * h * 0.12, r: 42, g: 157, b: 143 },
     ];
 
+    // Inject drag velocity into the field
+    if (dragX >= 0 && prevDragX >= 0) {
+      const dvx = (dragX - prevDragX) * 0.5;
+      const dvy = (dragY - prevDragY) * 0.5;
+      const ci = Math.floor(dragX / STEP);
+      const cj = Math.floor(dragY / STEP);
+      const cols2 = Math.ceil(w / STEP);
+      const radius = 8;
+      for (let dj = -radius; dj <= radius; dj++) {
+        for (let di = -radius; di <= radius; di++) {
+          const ni = ci + di, nj = cj + dj;
+          if (ni < 0 || ni >= cols2 || nj < 0 || nj >= Math.ceil(h / STEP)) continue;
+          const dist = Math.sqrt(di * di + dj * dj);
+          if (dist > radius) continue;
+          const falloff = 1 - dist / radius;
+          const idx2 = nj * cols2 + ni;
+          vx[idx2] += dvx * falloff;
+          vy[idx2] += dvy * falloff;
+        }
+      }
+    }
+    prevDragX = dragX; prevDragY = dragY;
+    dragX = -1; dragY = -1;
+
     const cols = Math.ceil(w / STEP);
     for (const blob of blobs) {
       const spread = Math.min(w, h) * 0.18;
@@ -73,6 +100,10 @@ export const fluid: Algorithm = {
         }
       }
     }
+  },
+
+  mouseDragged(_p: p5, mx: number, my: number) {
+    dragX = mx; dragY = my;
   },
 
   resize(p: p5, width: number, height: number) {

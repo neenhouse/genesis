@@ -24,7 +24,8 @@ const TRAIL_COLORS = [
 
 export const gravity: Algorithm = {
   name: 'Gravity',
-  description: 'N-body simulation — orbiting masses painting gravitational trails',
+  description: 'N-body simulation — click to drop new masses into orbit',
+  interactive: true,
   palette: { background: '#05050f', colors: ['#fff0c8', '#ffd778', '#c8b4ff'] },
 
   setup(p: p5, seed: number, width: number, height: number) {
@@ -91,6 +92,18 @@ export const gravity: Algorithm = {
       p.fill(r, g, b, 150);
       p.ellipse(body.x, body.y, 2, 2);
     }
+  },
+
+  mousePressed(p: p5, mx: number, my: number) {
+    const color = TRAIL_COLORS[bodies.length % TRAIL_COLORS.length];
+    bodies.push({
+      x: mx, y: my,
+      vx: p.random(-1.5, 1.5),
+      vy: p.random(-1.5, 1.5),
+      mass: p.random(8, 25),
+      color,
+      prevX: mx, prevY: my,
+    });
   },
 
   resize(p: p5, width: number, height: number) {

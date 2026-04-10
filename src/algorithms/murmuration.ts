@@ -12,6 +12,7 @@ interface Boid {
 
 let boids: Boid[] = [];
 let w = 0, h = 0;
+let predatorX = -1, predatorY = -1;
 
 function limit(vx: number, vy: number, max: number): [number, number] {
   const mag = Math.sqrt(vx * vx + vy * vy);
@@ -21,7 +22,8 @@ function limit(vx: number, vy: number, max: number): [number, number] {
 
 export const murmuration: Algorithm = {
   name: 'Murmuration',
-  description: 'Particle swarms with emergent flocking behavior',
+  description: 'Flocking swarm — move your mouse to scatter the flock',
+  interactive: true,
   palette: { background: '#0a1628', colors: ['#d4a574', '#ffffff', '#6b8bb5'] },
 
   setup(p: p5, seed: number, width: number, height: number) {
@@ -59,6 +61,17 @@ export const murmuration: Algorithm = {
       if (cohCount > 0) { const cx = cohX / cohCount - boid.x, cy = cohY / cohCount - boid.y; const [tx, ty] = limit(cx * 0.01, cy * 0.01, MAX_FORCE); ax += tx; ay += ty; }
       if (sepCount > 0) { const [tx, ty] = limit(sepX / sepCount, sepY / sepCount, MAX_FORCE * 1.5); ax += tx; ay += ty; }
 
+      // Flee from mouse predator
+      if (predatorX >= 0) {
+        const pdx = boid.x - predatorX, pdy = boid.y - predatorY;
+        const pdist = Math.sqrt(pdx * pdx + pdy * pdy);
+        if (pdist < 120 && pdist > 0) {
+          const flee = (120 - pdist) / 120 * MAX_FORCE * 4;
+          ax += (pdx / pdist) * flee;
+          ay += (pdy / pdist) * flee;
+        }
+      }
+
       boid.vx += ax; boid.vy += ay;
       [boid.vx, boid.vy] = limit(boid.vx, boid.vy, MAX_SPEED);
       boid.x += boid.vx; boid.y += boid.vy;
@@ -70,6 +83,10 @@ export const murmuration: Algorithm = {
       p.noStroke(); p.fill(212, 165, 116, alpha);
       p.ellipse(boid.x, boid.y, 3, 3);
     }
+  },
+
+  mouseMoved(_p: p5, mx: number, my: number) {
+    predatorX = mx; predatorY = my;
   },
 
   resize(p: p5, width: number, height: number) { w = width; h = height; },

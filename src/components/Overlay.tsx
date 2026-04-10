@@ -38,6 +38,7 @@ export function Overlay({
       <div className="overlay-title">
         <div className="overlay-title-header">
           <h1>{algorithm.name}</h1>
+          {algorithm.interactive && <span className="interactive-badge">interactive</span>}
           <span className="algorithm-counter">{currentIndex + 1} / {totalCount}</span>
         </div>
         <p>{algorithm.description}</p>

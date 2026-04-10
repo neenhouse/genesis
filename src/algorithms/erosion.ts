@@ -14,7 +14,8 @@ let frameCount = 0;
 
 export const erosion: Algorithm = {
   name: 'Erosion',
-  description: 'Differential growth — organic curves that split and writhe',
+  description: 'Differential growth — click to plant new growth seeds',
+  interactive: true,
   palette: { background: '#2a2a2a', colors: ['#c47a4a', '#d4a55a', '#f0e0c0'] },
 
   setup(p: p5, seed: number, width: number, height: number) {
@@ -86,6 +87,21 @@ export const erosion: Algorithm = {
     p.curveVertex(nodes[1].x, nodes[1].y);
     p.endShape();
     frameCount++;
+  },
+
+  mousePressed(p: p5, mx: number, my: number) {
+    // Inject a new small growth ring at click position
+    const count = 20;
+    const r = 15;
+    const newNodes: Node[] = [];
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * p.TWO_PI;
+      newNodes.push({ x: mx + Math.cos(angle) * r, y: my + Math.sin(angle) * r });
+    }
+    // Splice new ring into the existing chain
+    nodes.push(...newNodes);
+    frameCount = Math.min(frameCount, 500); // extend animation
+    p.loop();
   },
 
   resize(p: p5, width: number, height: number) {

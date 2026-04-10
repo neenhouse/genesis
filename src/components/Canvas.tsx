@@ -31,6 +31,18 @@ export function Canvas({ algorithm, seed, transitioning }: CanvasProps) {
         algorithm.draw(p);
       };
 
+      p.mousePressed = () => {
+        algorithm.mousePressed?.(p, p.mouseX, p.mouseY);
+      };
+
+      p.mouseDragged = () => {
+        algorithm.mouseDragged?.(p, p.mouseX, p.mouseY);
+      };
+
+      p.mouseMoved = () => {
+        algorithm.mouseMoved?.(p, p.mouseX, p.mouseY);
+      };
+
       p.windowResized = () => {
         p.resizeCanvas(window.innerWidth, window.innerHeight);
         if (algorithm.resize) {
