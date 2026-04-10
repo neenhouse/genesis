@@ -7,11 +7,14 @@ interface OverlayProps {
   currentIndex: number;
   totalCount: number;
   autoplay: boolean;
+  evolving: boolean;
+  layerAlgorithm: Algorithm | null;
   copied: boolean;
   onPrevSeed: () => void;
   onNextSeed: () => void;
   onRandomSeed: () => void;
   onToggleAutoplay: () => void;
+  onToggleEvolve: () => void;
   onShare: () => void;
   onSave: () => void;
   onToggleHelp: () => void;
@@ -24,11 +27,14 @@ export function Overlay({
   currentIndex,
   totalCount,
   autoplay,
+  evolving,
+  layerAlgorithm,
   copied,
   onPrevSeed,
   onNextSeed,
   onRandomSeed,
   onToggleAutoplay,
+  onToggleEvolve,
   onShare,
   onSave,
   onToggleHelp,
@@ -42,6 +48,9 @@ export function Overlay({
           <span className="algorithm-counter">{currentIndex + 1} / {totalCount}</span>
         </div>
         <p>{algorithm.description}</p>
+        {layerAlgorithm && (
+          <p className="layer-indicator">+ {layerAlgorithm.name} layer (L to toggle, Esc to clear)</p>
+        )}
       </div>
 
       <div className="overlay-controls">
@@ -65,6 +74,14 @@ export function Overlay({
             title="Autoplay (Space)"
           >
             {autoplay ? '\u23F8' : '\u25B6'}
+          </button>
+          <button
+            onClick={onToggleEvolve}
+            className={`action-btn ${evolving ? 'active' : ''}`}
+            aria-label={evolving ? 'Stop evolution' : 'Start evolution'}
+            title="Evolution mode (E)"
+          >
+            &#8734;
           </button>
           <button
             onClick={onShare}

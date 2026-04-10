@@ -6,9 +6,13 @@ let time = 0;
 // Seeded offset values
 let ox1 = 0, oy1 = 0, ox2 = 0, oy2 = 0, ox3 = 0;
 
+// Audio reactivity — driven externally
+export let plasmaAudio = { bass: 0, mid: 0, treble: 0, volume: 0, active: false };
+
 export const plasma: Algorithm = {
   name: 'Plasma',
-  description: 'Classic plasma — layered sine waves cycling through vivid rainbow hues',
+  description: 'Classic plasma — press M for audio reactivity via microphone',
+  interactive: true,
   palette: { background: '#000000', colors: ['#ff0080', '#00ffcc', '#ffff00'] },
 
   setup(p: p5, seed: number, width: number, height: number) {
@@ -38,19 +42,24 @@ export const plasma: Algorithm = {
       for (let px = 0; px < iw; px += step) {
         const xn = px / iw;
 
+        // Audio-reactive multipliers
+        const aFreq = plasmaAudio.active ? 1 + plasmaAudio.treble * 4 : 1;
+        const aAmp = plasmaAudio.active ? 1 + plasmaAudio.bass * 3 : 1;
+        const aSpeed = plasmaAudio.active ? 1 + plasmaAudio.volume * 2 : 1;
+
         // Three overlapping sine waves
-        const v1 = Math.sin(xn * 8 + ox1 + time);
-        const v2 = Math.sin(yn * 6 + oy1 + time * 0.7);
-        const v3 = Math.sin((xn + yn) * 5 + ox2 + time * 0.5);
+        const v1 = Math.sin(xn * 8 * aFreq + ox1 + time * aSpeed);
+        const v2 = Math.sin(yn * 6 * aFreq + oy1 + time * 0.7 * aSpeed);
+        const v3 = Math.sin((xn + yn) * 5 + ox2 + time * 0.5 * aSpeed);
         const v4 = Math.sin(Math.sqrt(
-          (xn - 0.5 + 0.3 * Math.sin(time * 0.3 + ox3)) ** 2 +
-          (yn - 0.5 + 0.3 * Math.cos(time * 0.4 + oy2)) ** 2
+          (xn - 0.5 + 0.3 * aAmp * Math.sin(time * 0.3 + ox3)) ** 2 +
+          (yn - 0.5 + 0.3 * aAmp * Math.cos(time * 0.4 + oy2)) ** 2
         ) * 12);
 
         const combined = (v1 + v2 + v3 + v4) / 4; // -1..1
-        const hue = ((combined * 180 + time * 40) % 360 + 360) % 360;
+        const hue = ((combined * 180 + time * 40 * aSpeed) % 360 + 360) % 360;
         const sat = 80 + combined * 20;
-        const bri = 75 + combined * 25;
+        const bri = plasmaAudio.active ? 60 + plasmaAudio.volume * 40 + combined * 25 : 75 + combined * 25;
 
         // Convert HSB to RGB inline for pixel writing
         const c = p.color(hue, sat, bri, 100);

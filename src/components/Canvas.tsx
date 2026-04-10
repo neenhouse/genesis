@@ -6,9 +6,10 @@ interface CanvasProps {
   algorithm: Algorithm;
   seed: number;
   transitioning: boolean;
+  isLayer?: boolean;
 }
 
-export function Canvas({ algorithm, seed, transitioning }: CanvasProps) {
+export function Canvas({ algorithm, seed, transitioning, isLayer }: CanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const p5Ref = useRef<p5 | null>(null);
 
@@ -66,7 +67,7 @@ export function Canvas({ algorithm, seed, transitioning }: CanvasProps) {
   return (
     <div
       ref={containerRef}
-      className={`canvas-container ${transitioning ? 'fading' : ''}`}
+      className={`canvas-container ${transitioning ? 'fading' : ''} ${isLayer ? 'canvas-layer' : ''}`}
     />
   );
 }
